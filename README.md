@@ -50,10 +50,10 @@ pnpm cap:sync       # 把 dist 同步进 android/
 cd android && gradlew.bat assembleDebug
 ```
 
-`src/seed.ts` 是构建时生成的，不要手改、也不要提交：
+`src/seed.ts` 是构建时生成的空白配置（不含任何 Key）：
 
 - `pnpm seed:public` → 空配置，用户首次启动自己填
-- `pnpm seed:personal` → 从 `src/seed.personal.ts`（本地私有，已 gitignore）注入自己的 Key 和预置角色，用于打自用包
+- 想预置服务商或角色，可以改 `scripts/gen-seed.mjs` 里生成的模板内容
 
 桌面端调试时如果 Electron 以 Node 模式启动（`app` 未定义），检查环境变量
 `ELECTRON_RUN_AS_NODE` 是否被系统设成了 `1`，运行前清空即可。
@@ -95,5 +95,4 @@ MIT，见 [LICENSE](LICENSE)。角色人格文本仅作示例，请自行确认�
 本项目在 **DSH（DeepSeek Harness）** 里完成开发：需求拆分、代码实现、打包、真机联调、文档整理都是在这个环境里一步一步做出来的。
 
 > 说明：这一份是**公开版**——不含预置 API Key、不含私有角色人格、不含任何个人地址。
-> 联网检索、多端同步、本地 Ollama 预设等功能放在编译期开关（`DAFEIYU_EDITION=personal`）后面，
-> 默认构建（public）不会启用，也不会出现在产物里。
+> 部分实验性功能（联网检索、多端同步、本地模型预设）放在编译期开关后面，默认构建不会启用，也不会出现在产物里。
