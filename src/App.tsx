@@ -164,6 +164,8 @@ export default function App() {
   const [ageOk, setAgeOk] = useState<boolean>(!IS_PERSONAL || TEST_MODE || localStorage.getItem("ageOk") === "1");
   /** 长期记忆（事实 + 摘要）默认关：塞太多东西进 system，7B 会被带偏，聊什么都能拐到那几条事实上 */
   const [memoryOn, setMemoryOn] = useState<boolean>(() => localStorage.getItem("memoryOn") === "1");
+  /** 模型是否支持看图。关：只发「[图片]」占位；开：按多模态格式真发图片（文本模型开了会报错） */
+  const [visionOn, setVisionOn] = useState<boolean>(() => localStorage.getItem("visionOn") === "1");
   const [status, setStatus] = useState("");
   const [newName, setNewName] = useState("");
   const [newPersona, setNewPersona] = useState(DEFAULT_PERSONA);
@@ -431,7 +433,12 @@ export default function App() {
 
       // 注意：ctx.recent 里**已经包含**刚发出去的这条用户消息，
       // 所以不能再 push 一次（旧代码就是这么干的，等于把问题问了两遍）
-      const history = ctx.recent.map((m) => ({ role: m.role, content: m.content }));
+      const history = ctx.recent.map((m) => ({ role: m.role, content: m.content })) as { role: "user" | "assistant"; content: string; images?: string[] }[];
+      // 开了「支持看图」才把图片真发给模型；否则只发文字占位
+      if (visionOn && image) {
+        const lastM = history[history.length - 1];
+        if (lastM && lastM.role === "user") lastM.images = [image];
+      }
 
       // 两段式：资料太长，7B 会整段照抄。先让模型只用资料提炼一句结论，
       // 再把这一句塞进 system（短句它不会复述），最后由角色用自己的语气说话。
@@ -803,6 +810,23 @@ export default function App() {
           )}
           <div className="row-btns"><button onClick={checkProvider}>测试连接</button><button onClick={saveProvider}>保存</button></div>
           <div className="hint">Key 只存在这台设备（localStorage），不会写进导出备份。</div>
+
+          <div className="row-btns">
+            <button
+              style={visionOn ? { background: "#dbe4ff" } : undefined}
+              onClick={() => {
+                const v = !visionOn;
+                setVisionOn(v);
+                localStorage.setItem("visionOn", v ? "1" : "0");
+              }}
+            >
+              {visionOn ? "✓ " : ""}模型支持看图
+            </button>
+          </div>
+          <div className="hint">
+            打开后才会把图片真正发给模型。DeepSeek、Qwen 文本版这类没有视觉能力，开了会报错；
+            用 GPT-4o、通义 qwen-vl、Qwen2.5-VL 这种才需要打开。
+          </div>
 
           {IS_PERSONAL && (
             <>

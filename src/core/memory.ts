@@ -52,9 +52,16 @@ export function renderMemoryBlock(
     parts.push("【更早的聊天摘要】\n" + ctx.summary);
   }
   if (ctx.recent.length) {
+    // 图片/表情只存了 dataURL，模型（文本模型）根本收不到图，
+    // 所以这里明确写成「看不到」，别让它拿着「[图片]」三个字瞎猜自己看见了什么。
+    const render = (m: { role: string; content: string; image?: string }) => {
+      if (m.image && (m.content === "[图片]" || !m.content)) return "（发了一张图片，但你只能收到文字，看不到图里的内容）";
+      if (m.image && m.content === "[表情]") return "（发了一个表情包，你看不到它长什么样）";
+      return m.content.slice(0, 200);
+    };
     parts.push(
       "【最近的聊天】\n" +
-        ctx.recent.map((m) => `${m.role === "user" ? "主人" : "你"}: ${m.content.slice(0, 200)}`).join("\n")
+        ctx.recent.map((m) => `${m.role === "user" ? "主人" : "你"}: ${render(m)}`).join("\n")
     );
   }
   return parts.join("\n\n");
