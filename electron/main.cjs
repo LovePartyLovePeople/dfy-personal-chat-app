@@ -21,6 +21,11 @@ if (EDITION === "personal") {
   app.setPath("userData", path.join(app.getPath("appData"), "dafeiyu-personal"));
 }
 
+// 自动化测试用独立目录：测试会建角色、删角色，绝不能写进真实数据
+if (IS_TEST) {
+  app.setPath("userData", path.join(app.getPath("temp"), "dafeiyu-test"));
+}
+
 const CONFIG_PATH = path.join(app.getPath("userData"), "desktop-config.json");
 
 // 关键：Hiddify 等工具会设置系统代理（127.0.0.1:12334），Chromium 会把「所有」请求都塞进代理，
