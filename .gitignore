@@ -32,3 +32,6 @@ electron/edition.json
 
 # 自用版打包配置，不发布
 electron-builder.personal.yml
+
+# 本地网络穿透说明，不发布
+TAILSCALE.txt

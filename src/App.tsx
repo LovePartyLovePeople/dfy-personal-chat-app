@@ -74,7 +74,7 @@ const LOCAL_PROVIDER: ProviderConfig = {
  * 手机上 127.0.0.1 指的是手机自己，那儿没有模型。
  * 所以安卓端默认连「远程地址」——具体是什么地址由 seed 决定（个人地址不写进源码）。
  */
-const TAILSCALE_PROVIDER: ProviderConfig = SEED_REMOTE_BASE
+const REMOTE_PROVIDER: ProviderConfig = SEED_REMOTE_BASE
   ? { baseUrl: SEED_REMOTE_BASE, apiKey: "local", model: "dafeiyu" }
   : LOCAL_PROVIDER;
 
@@ -91,7 +91,7 @@ const PROVIDER_PRESETS = [
 
 type Preset = { name: string; baseUrl: string; model: string; models: string[] };
 
-/** 特供版额外预设：本地模型固定走 127.0.0.1；局域网/Tailscale 地址来自 seed（不写死在这里） */
+/** 额外预设：本机模型固定走 127.0.0.1；远程地址来自 seed（不写死在这里） */
 const LOCAL_PRESETS: Preset[] = [
   { name: "本地 Ollama", baseUrl: "http://127.0.0.1:11434/v1", model: "dafeiyu", models: ["dafeiyu", "qwen2.5:7b", "qwen2.5:14b"] },
   ...(SEED_LOCAL_PRESETS as Preset[]),
@@ -113,7 +113,7 @@ function loadProvider(): ProviderConfig {
     if (raw) return { ...DEFAULT_PROVIDER, ...JSON.parse(raw) };
   } catch {}
   // 特供版：桌面默认本机模型，手机默认连回家里的电脑
-  if (IS_PERSONAL) return ON_DESKTOP ? LOCAL_PROVIDER : TAILSCALE_PROVIDER;
+  if (IS_PERSONAL) return ON_DESKTOP ? LOCAL_PROVIDER : REMOTE_PROVIDER;
   if (SEED_PROVIDER.apiKey) return { ...DEFAULT_PROVIDER, ...SEED_PROVIDER };
   return DEFAULT_PROVIDER;
 }
@@ -828,7 +828,7 @@ export default function App() {
                 </button>
               </div>
               <div className="hint">
-                搜索由电脑代查：国内站直连，Google 等走电脑的 VPN。所以手机只连 Tailscale、不开 Hiddify 也能查到境外内容。
+                搜索由电脑代查：国内站直连，Google 等走电脑的 VPN。所以手机只要能访问这台电脑，不必额外配置代理也能查到境外内容。
                 想强制查一次，发「/搜 关键词」。
               </div>
               <div className="hint">
@@ -969,7 +969,7 @@ export default function App() {
           </div>
           <div className="hint">
             以电脑为中心：手机和桌面把各自记录推给电脑，电脑合并后再发回来。启动时会自动同步一次。
-            同步地址跟着服务商走（用「Tailscale 外面」预设时，同步也走 Tailscale，所以人在外面一样能同步）。
+            同步地址跟着服务商走：服务商指向远程地址时，同步也走同一条链路。
             注意：删除操作不会同步——在一边删掉的东西，下次同步可能被另一边带回来。
           </div>
 

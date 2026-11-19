@@ -29,7 +29,7 @@ if (IS_TEST) {
 const CONFIG_PATH = path.join(app.getPath("userData"), "desktop-config.json");
 
 // 关键：Hiddify 等工具会设置系统代理（127.0.0.1:12334），Chromium 会把「所有」请求都塞进代理，
-// 而代理不认识 Tailscale（100.64.0.0/10）和局域网网段，直接返回 502。
+// 而代理不认识 100.64.0.0/10 这类私有网段，直接返回 502。
 // 把私有网段和本机加入绕过列表，本地模型和 /__search 才不会被代理截胡。
 app.commandLine.appendSwitch(
   "proxy-bypass-list",
@@ -66,7 +66,7 @@ let quitting = false;
 
 /**
  * 走 Chromium 网络栈的 fetch：会遵守 Windows 系统代理（Hiddify 开着才连得上境外站点），
- * 也会遵守我们设置的 proxy-bypass-list（本地/Tailscale 不被代理截胡）。
+ * 也会遵守我们设置的 proxy-bypass-list（本地/私有网段不被代理截胡）。
  * Node 自带的 fetch 不认系统代理，境外站点会全部失败——这是踩过的坑。
  */
 function httpFetch(url, opts) {
@@ -419,7 +419,7 @@ function startServer() {
       console.error("[server] 监听失败:", err && err.message);
       resolve(PORT);
     });
-    // 绑 0.0.0.0：手机要能通过局域网/Tailscale 调 /__search 取检索结果
+    // 绑 0.0.0.0：手机要能通过局域网/私有网段调 /__search 取检索结果
     server.listen(PORT, "0.0.0.0", () => resolve(server.address().port));
   });
 }

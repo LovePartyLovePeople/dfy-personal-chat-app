@@ -1,6 +1,6 @@
 /**
  * 联网检索：不在手机/浏览器里直接查，而是交给跑在电脑上的 /__search 接口代查。
- * 这样手机上只要连得到电脑（局域网或 Tailscale），不开 VPN 也能查到境外内容。
+ * 这样手机上只要连得到电脑（局域网或私有网段），不额外配代理也能查到境外内容。
  */
 
 export type SearchHit = { title: string; url: string; snippet: string; date?: string };
