@@ -9,7 +9,7 @@ electron.out.log
 electron.err.log
 test-report.json
 
-# 本地私有，含真实 Key，绝不提交（src/seed.ts 是空白公开版，需要提交）
+# 本地私有，含真实 Key，绝不提交
 src/seed.personal.ts
 
 # 安卓

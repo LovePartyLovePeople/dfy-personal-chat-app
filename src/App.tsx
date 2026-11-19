@@ -12,7 +12,7 @@ import { SEED_PROVIDER, SEED_CHARACTER, SEED_LOCAL_PRESETS, SEED_REMOTE_BASE } f
 
 const VERSION = "0.9.0";
 
-/** 构建时由 vite.config.ts 注入：public = 合规公开版，personal = 特供版 */
+/** 构建时由 vite.config.ts 注入 */
 const EDITION = (import.meta.env.VITE_EDITION as string) === "personal" ? "personal" : "public";
 const IS_PERSONAL = EDITION === "personal";
 const APP_TITLE = (import.meta.env.VITE_APP_NAME as string) || "大肥鱼";
@@ -63,7 +63,7 @@ const DEFAULT_PROVIDER: ProviderConfig = {
   model: "deepseek-chat",
 };
 
-/** 特供版默认走本地 Ollama：离线、免费、数据不出本机 */
+/** 自用构建的默认服务商：本机模型，离线、免费 */
 const LOCAL_PROVIDER: ProviderConfig = {
   baseUrl: "http://127.0.0.1:11434/v1",
   apiKey: "local",
@@ -112,7 +112,7 @@ function loadProvider(): ProviderConfig {
     const raw = localStorage.getItem("provider");
     if (raw) return { ...DEFAULT_PROVIDER, ...JSON.parse(raw) };
   } catch {}
-  // 特供版：桌面默认本机模型，手机默认连回家里的电脑
+  // 自用构建：桌面默认本机模型，手机默认连远程地址
   if (IS_PERSONAL) return ON_DESKTOP ? LOCAL_PROVIDER : REMOTE_PROVIDER;
   if (SEED_PROVIDER.apiKey) return { ...DEFAULT_PROVIDER, ...SEED_PROVIDER };
   return DEFAULT_PROVIDER;
@@ -120,7 +120,7 @@ function loadProvider(): ProviderConfig {
 
 type Sampling = { temperature: number; topP: number; maxTokens: number };
 
-/** 公开版沿用原来的采样参数，行为一个字节都不变；特供版默认按 RP 调好的值 */
+/** 默认采样参数 */
 const DEFAULT_SAMPLING: Sampling = IS_PERSONAL
   ? { temperature: 0.9, topP: 0.95, maxTokens: 1200 }
   : { temperature: 1.05, topP: 1, maxTokens: 800 };
@@ -187,7 +187,7 @@ export default function App() {
   async function refreshList() {
     let all = await db.characters.toArray();
     if (!all.length && SEED_CHARACTER.name) {
-      // 首次启动：仅特供版预置角色
+      // 首次启动：仅自用构建预置角色
       await db.characters.put({
         id: "seed_char",
         name: SEED_CHARACTER.name,

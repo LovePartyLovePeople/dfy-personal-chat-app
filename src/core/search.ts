@@ -10,7 +10,7 @@ export type SearchMode = "off" | "auto" | "always";
 
 export const DEFAULT_SEARCH_MODE: SearchMode = "auto";
 
-/** 电脑端搜索口的端口，跟特供版桌面端固定端口一致 */
+/** 电脑端搜索口的端口，与桌面端固定端口一致 */
 const DESKTOP_PORT = 51790;
 
 /** 桌面端同源调用；安卓端从模型地址推出电脑地址 */

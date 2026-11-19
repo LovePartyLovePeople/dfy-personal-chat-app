@@ -5,7 +5,7 @@ const path = require("path");
 
 const DIST = path.join(__dirname, "..", "dist");
 
-// 版本分支：public = 合规公开版，personal = 特供版。
+// 构建变体：public = 默认构建，personal = 可选的自用构建。
 // 优先读环境变量（开发时用），其次读构建期写入的 edition.json（打包后用，因为双击 exe 没有环境变量）。
 let editionHint = process.env.DAFEIYU_EDITION || "";
 if (!editionHint) {

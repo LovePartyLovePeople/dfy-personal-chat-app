@@ -14,7 +14,7 @@ if (flavor === "personal") {
   writeFileSync(target, readFileSync(personal, "utf8"), "utf8");
   console.log("[seed] personal：已注入 API Key、预置角色与本地地址");
 } else {
-  const blank = `// 公开版：不预置任何 Key、角色或私有地址（构建时生成）
+  const blank = `// 构建时生成：不预置任何 Key、角色或地址
 export const SEED_PROVIDER = { baseUrl: "", apiKey: "", model: "" };
 export const SEED_CHARACTER = { name: "", persona: "" };
 export const SEED_LOCAL_PRESETS = [];
