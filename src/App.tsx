@@ -6,6 +6,7 @@ import { compressImage, pickImage, pickImages } from "./core/image";
 import { searchWeb, resolveSearchBase, shouldSearch, renderSearchBlock, extractUrl, fetchPage, renderPageBlock, cleanQuery, DEFAULT_SEARCH_MODE } from "./core/search";
 import type { SearchMode } from "./core/search";
 import { syncWith } from "./core/sync";
+import sponsorImg from "./assets/sponsor.jpg";
 import type { Character, Fact, Message, ProviderConfig, Sticker, Summary } from "./core/types";
 import { DEFAULT_MEMORY } from "./core/types";
 import { SEED_PROVIDER, SEED_CHARACTER, SEED_LOCAL_PRESETS, SEED_REMOTE_BASE } from "./seed";
@@ -166,6 +167,7 @@ export default function App() {
   const [memoryOn, setMemoryOn] = useState<boolean>(() => localStorage.getItem("memoryOn") === "1");
   /** 模型是否支持看图。关：只发「[图片]」占位；开：按多模态格式真发图片（文本模型开了会报错） */
   const [visionOn, setVisionOn] = useState<boolean>(() => localStorage.getItem("visionOn") === "1");
+  const [showSponsor, setShowSponsor] = useState(false);
   const [status, setStatus] = useState("");
   const [newName, setNewName] = useState("");
   const [newPersona, setNewPersona] = useState(DEFAULT_PERSONA);
@@ -1108,7 +1110,18 @@ export default function App() {
 
   return (
     <div className="page">
-      <div className="topbar"><div className="title">{APP_TITLE}</div><div className="gear" onClick={() => setView({ kind: "new" })}>＋</div></div>
+      <div className="topbar"><div className="title">{APP_TITLE}</div><div className="gear" onClick={() => setShowSponsor(true)} title="赞助作者">♥</div><div className="gear" onClick={() => setView({ kind: "new" })}>＋</div></div>
+
+        {showSponsor && (
+          <div className="modal-mask" onClick={() => setShowSponsor(false)}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-title">赞助作者</div>
+              <img className="modal-qr" src={sponsorImg} alt="赞赏码" />
+              <div className="modal-hint">感谢您的使用！赞赏请量力而行！</div>
+              <button onClick={() => setShowSponsor(false)}>关闭</button>
+            </div>
+          </div>
+        )}
       <div className="msgs">
         {chars.length === 0 && (
           <div className="empty">

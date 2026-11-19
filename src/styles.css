@@ -173,3 +173,21 @@ body {
   left: -12px; top: auto; bottom: -8px;
   width: 62%; height: 62%;
 }
+
+/* ---- 赞助弹窗 ---- */
+.modal-mask {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  display: grid; place-items: center; z-index: 50; padding: 24px;
+}
+.modal {
+  background: #fff; border-radius: 14px; padding: 18px;
+  max-width: 340px; width: 100%; text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,.25);
+}
+.modal-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.modal-qr { width: 100%; border-radius: 10px; display: block; }
+.modal-hint { color: #8a8a8a; font-size: 12px; margin: 12px 0; line-height: 1.5; }
+.modal button {
+  width: 100%; padding: 10px; border: none; border-radius: 10px;
+  background: var(--accent); color: #fff; font-size: 15px;
+}
