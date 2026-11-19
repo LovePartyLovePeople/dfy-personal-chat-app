@@ -931,7 +931,6 @@ export default function App() {
             </button>
           </div>
 
-          {IS_PERSONAL && (<>
           <h3>外观</h3>
           <div className="row-btns">
             <button onClick={changeMyAvatar}>我的头像</button>
@@ -989,6 +988,7 @@ export default function App() {
           <div className="hint">圆角：{bubbleStyle.radius}px</div>
           <input type="range" min="0" max="28" step="1" value={bubbleStyle.radius} onChange={(e) => patchBubble({ radius: Number(e.target.value) })} />
 
+          {IS_PERSONAL && (<>
           <h3>记忆同步</h3>
           <div className="row-btns">
             <button onClick={() => doSync(false)}>立即同步</button>
