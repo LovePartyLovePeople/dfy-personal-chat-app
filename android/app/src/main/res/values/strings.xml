@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Lessseriousness</string>
-    <string name="title_activity_main">Lessseriousness</string>
+    <string name="app_name">大肥鱼</string>
+    <string name="title_activity_main">大肥鱼</string>
     <string name="package_name">com.dafeiyu.app</string>
     <string name="custom_url_scheme">com.dafeiyu.app</string>
 </resources>
