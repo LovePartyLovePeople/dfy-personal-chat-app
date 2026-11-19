@@ -1,0 +1,15 @@
+# 特供版打包配置：和公开版共用代码，只换产品名、appId 和产物名
+appId: com.dafeiyu.personal
+productName: Lessseriousness
+directories:
+  output: release
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+win:
+  target:
+    - portable
+  artifactName: Lessseriousness-${version}.exe
+portable:
+  artifactName: Lessseriousness-${version}.exe

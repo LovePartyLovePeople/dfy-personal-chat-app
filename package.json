@@ -1,0 +1,57 @@
+{
+  "name": "dafeiyu-app",
+  "private": true,
+  "version": "0.9.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test:memory": "tsx scripts/test-memory.ts",
+    "electron": "electron .",
+    "seed:personal": "node scripts/gen-seed.mjs personal",
+    "seed:public": "node scripts/gen-seed.mjs public",
+    "edition:personal": "node scripts/gen-edition.mjs personal",
+    "edition:public": "node scripts/gen-edition.mjs public",
+    "web:personal": "node scripts/gen-edition.mjs personal && node scripts/gen-seed.mjs personal && vite build",
+    "web:public": "node scripts/gen-edition.mjs public && node scripts/gen-seed.mjs public && vite build",
+    "dist:personal": "npm run web:personal && electron-builder --config electron-builder.personal.yml --win portable",
+    "dist:public": "npm run web:public && electron-builder --win portable"
+  },
+  "dependencies": {
+    "dexie": "^4.0.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  },
+  "main": "electron/main.cjs",
+  "build": {
+    "appId": "com.dafeiyu.desktop",
+    "productName": "大肥鱼",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "artifactName": "dafeiyu-${version}.exe"
+    }
+  }
+}
