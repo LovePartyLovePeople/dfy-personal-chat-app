@@ -1,0 +1,31 @@
+node_modules/
+dist/
+release/
+build.log
+headless.log
+test.out.log
+test.err.log
+electron.out.log
+electron.err.log
+test-report.json
+
+# 本地私有，含真实 Key，绝不提交（src/seed.ts 是空白公开版，需要提交）
+src/seed.personal.ts
+
+# 安卓
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/src/main/assets/public/
+
+# 系统
+Thumbs.db
+.DS_Store
+*.keystore
+*.jks
+
+# 内部开发记录与构建产物，不发布
+HANDOFF.md
+build-desktop.log
+electron/edition.json
