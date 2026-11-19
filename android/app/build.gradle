@@ -4,7 +4,10 @@ android {
     namespace "com.dafeiyu.app"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.dafeiyu.app"
+        // 构建时可用 DAFEIYU_APK_SUFFIX 给包名加后缀，让公开版和自用版能同时装在一台手机上
+        // （不加后缀 = com.dafeiyu.app，自用版一直用这个，改了会丢数据）
+        def apkSuffix = System.getenv("DAFEIYU_APK_SUFFIX")
+        applicationId apkSuffix ? "com.dafeiyu.app." + apkSuffix : "com.dafeiyu.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 9
