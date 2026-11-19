@@ -32,6 +32,8 @@
 
 Key 只写在本机 `localStorage`，不会出现在导出的备份里，也不会发给除你填的接口地址以外的任何地方。
 
+> 想在手机上连接自己电脑跑的模型（Ollama 等），见 [TAILSCALE.txt](TAILSCALE.txt)。
+
 ## 开发
 
 需要 Node 18+ 与 pnpm；安卓需要 JDK 17 + Android SDK。
